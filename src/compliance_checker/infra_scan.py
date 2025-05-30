@@ -29,19 +29,40 @@ def scan_resources(resources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             })
     return issues
 
-def save_report(issues: List[Dict[str, Any]], filepath: str = "data/results/infra_scan_report.json") -> None:
+def generate_summary_report(issues: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
-    Saves the compliance issues to a JSON file.
+    Builds a summary report from a list of issues.
+    """
+    return {
+        "summary": {
+            "total": len(MOCK_AZURE_RESOURCES),
+            "non_compliant": len(issues),
+        },
+        "non_compliant_resources": issues,
+    }
+
+def scan_for_compliance() -> Dict[str, Any]:
+    """
+    Public interface to perform a scan and return a full compliance report.
+    This is the function expected by unit tests.
+    """
+    issues = scan_resources(MOCK_AZURE_RESOURCES)
+    report = generate_summary_report(issues)
+    return report
+
+def save_report(report: Dict[str, Any], filepath: str = "data/results/infra_scan_report.json") -> None:
+    """
+    Saves the compliance report to a JSON file.
     """
     with open(filepath, "w") as f:
-        json.dump(issues, f, indent=2)
+        json.dump(report, f, indent=2)
 
 def run_scan() -> None:
     """
-    Main entrypoint for scanning and saving results.
+    Main CLI entrypoint for scanning and saving results.
     """
-    issues = scan_resources(MOCK_AZURE_RESOURCES)
-    save_report(issues)
+    report = scan_for_compliance()
+    save_report(report)
 
 if __name__ == "__main__":
     run_scan()
