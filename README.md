@@ -24,6 +24,7 @@ Built to showcase core skills for an Azure Engineer (AI) role, this solution aut
 - **AI and Analytics:** Local model explainability/bias checks, minimal Azure AI service calls to reduce cost
 
 ## Folder Structure
+```bash
 regulatory-compliance-checker/
 ├── infrastructure/ # Terraform and Ansible scripts for environment setup
 ├── src/ # Python scripts for compliance scanning and agentic AI
@@ -38,7 +39,7 @@ regulatory-compliance-checker/
 ├── README.md # This file
 ├── requirements.txt # Python dependencies
 └── deployment/ # Scripts for deployment automation (optional)
-
+```
 
 ## Getting Started
 
@@ -59,12 +60,12 @@ git clone <repo-url>
 cd regulatory-compliance-checker
 ```
 2. Create a virtual environment and install dependencies:
-
+```bash
 python -m venv .venv
 source .venv/bin/activate  # Linux/macOS
 # or
 .\\.venv\\Scripts\\activate  # Windows
-
+```
 pip install -r requirements.txt
 
 ### Usage
@@ -84,11 +85,7 @@ Refer to detailed design and as-built documentation in the docs/ folder (to be a
 
 ## Roadmap
 Planned enhancements:
-
 Integration with Azure DevOps pipelines for automated scanning
-
 Enhanced AI governance checks with Azure Machine Learning SDK
-
 Web-based dashboard for compliance visualization
-
 Full Azure resource scanning using Azure SDKs with proper auth
