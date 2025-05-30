@@ -25,20 +25,40 @@ Built to showcase core skills for an Azure Engineer (AI) role, this solution aut
 
 ## Folder Structure
 ```bash
-regulatory-compliance-checker/
-├── infrastructure/ # Terraform and Ansible scripts for environment setup
-├── src/ # Python scripts for compliance scanning and agentic AI
-│ ├── infra_scan.py # Infrastructure misconfiguration scanner
-│ ├── ai_governance.py # AI model governance checks
-│ ├── audit_log_analysis.py # Audit log analyzer
-│ ├── agentic_ai.py # Interactive agentic AI assistant module
-│ └── utils.py # Helper functions and utilities
-├── data/ # Sample input files (infra configs, model metadata, logs)
-├── reports/ # Generated compliance reports
-├── tests/ # Unit tests for modules
-├── README.md # This file
-├── requirements.txt # Python dependencies
-└── deployment/ # Scripts for deployment automation (optional)
+azure-ai-compliance-checker/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── main.py
+├── agent/
+│   ├── __init__.py
+│   ├── base_agent.py
+│   └── compliance_agent.py
+├── checks/
+│   ├── __init__.py
+│   ├── infra_scanner.py
+│   ├── ai_model_checker.py
+│   └── log_auditor.py
+├── reports/
+│   ├── __init__.py
+│   └── report_generator.py
+├── config/
+│   ├── settings.yaml
+│   └── rules/
+│       ├── infra_rules.json
+│       ├── ai_rules.json
+│       └── log_rules.json
+├── scripts/
+│   ├── deploy_with_terraform.sh
+│   └── run_ansible_playbook.sh
+├── notebooks/
+│   ├── model_bias_analysis.ipynb
+│   └── drift_detection.ipynb
+└── tests/
+    ├── __init__.py
+    ├── test_infra_scanner.py
+    ├── test_ai_model_checker.py
+    └── test_log_auditor.py
 ```
 
 ## Getting Started
