@@ -1,11 +1,19 @@
 # azure-ai-compliance-checker
-An Azure-powered compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
+
+An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
 
 ## Project Overview
 
-This project demonstrates an Azure-powered automated compliance checker designed to support enterprise AI governance, infrastructure security, and regulatory adherence. It leverages Infrastructure as Code (Terraform, Ansible) and integrates Azure AI services including Azure OpenAI and Azure Machine Learning to provide scalable, secure, and cost-efficient AI-driven automation.
+This project showcases an **agentic AI system** built to operate autonomously within Azure environments to ensure AI infrastructure compliance, security, and governance. It features an LLM-powered agent that orchestrates scans, audits, and policy evaluations across Infrastructure as Code, model governance metadata, and runtime environments.
 
-Built to showcase core skills for an Azure Engineer (AI) role, this solution automates the detection of infrastructure misconfigurations, audits AI model governance (drift, fairness, explainability), and performs regulatory compliance reporting aligned with industry standards such as APRA CPS 234 and Responsible AI frameworks.
+Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform**, and **Ansible**, the solution supports:
+
+- Autonomous compliance gap detection
+- Responsible AI governance checks (e.g., drift, fairness, explainability)
+- Regulatory alignment (e.g., APRA CPS 234, Microsoft Responsible AI)
+- Scalable and cost-efficient automation using GitOps best practices
+
+Built to demonstrate the capabilities required for an **Azure Engineer (AI)** role, the project emphasizes real-world implementation of secure AI systems using native Azure services and DevOps principles.
 
 ## Features
 
