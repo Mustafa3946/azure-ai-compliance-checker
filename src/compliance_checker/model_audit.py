@@ -82,3 +82,22 @@ def audit_model(model_metadata: Dict[str, Any]) -> List[str]:
         issues.append("Explainability tools not documented for this model.")
 
     return issues
+
+def run_model_audit() -> List[str]:
+    """
+    Runs a demo model audit using placeholder metadata.
+    
+    Returns:
+        List of audit issue strings
+    """
+    # Demo model metadata (can be replaced by actual file/parsing later)
+    example_model = {
+        "last_trained": "2024-11-15T12:00:00",
+        "metrics": {
+            "precision_group_A": 0.90,
+            "precision_group_B": 0.75
+        },
+        "explainability_tools": []  # e.g., ["SHAP"]
+    }
+
+    return audit_model(example_model)

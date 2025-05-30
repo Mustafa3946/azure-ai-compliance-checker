@@ -34,3 +34,15 @@ def check_required_tags(
                 "missing_tags": missing
             })
     return violations
+
+def run_tag_policy_check() -> List[Dict[str, Any]]:
+    # Example resource data, replace with real resource fetching later
+    print("DEBUG: run_tag_policy_check called")
+    sample_resources = [
+        {"name": "storage-logs", "type": "Microsoft.Storage/storageAccounts", "tags": {"owner": "teamA"}},
+        {"name": "vm-unlabeled", "type": "Microsoft.Compute/virtualMachines", "tags": {}},
+        {"name": "db-prod", "type": "Microsoft.SQL/servers/databases", "tags": {"env": "prod", "owner": "teamB", "cost_center": "1234"}},
+    ]
+    violations = check_required_tags(sample_resources)
+    return violations
+

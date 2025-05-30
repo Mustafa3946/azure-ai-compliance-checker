@@ -43,11 +43,13 @@ azure-ai-compliance-checker/
 │   │   ├── model_audit.py
 │   │   ├── pii_scan.py
 │   │   ├── report.py
+│   │   ├── tag_policy.py
 │   │   └── utils.py
 ├── tests/
 │   ├── test_infra_scan.py
 │   ├── test_model_audit.py
 │   ├── test_pii_scan.py
+│   ├── test_tag_policy.py
 │   └── test_report.py
 ├── infra/
 │   ├── terraform/
