@@ -13,7 +13,6 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - Regulatory alignment (e.g., APRA CPS 234, Microsoft Responsible AI)
 - Scalable and cost-efficient automation using GitOps best practices
 
-Built to demonstrate the capabilities required for an **Azure Engineer (AI)** role, the project emphasizes real-world implementation of secure AI systems using native Azure services and DevOps principles.
 
 ## Features
 
@@ -34,39 +33,35 @@ Built to demonstrate the capabilities required for an **Azure Engineer (AI)** ro
 ## Folder Structure
 ```bash
 azure-ai-compliance-checker/
-├── README.md
-├── requirements.txt
+├── data/
+│   ├── config/
+│   └── results/
+├── src/
+│   ├── compliance_checker/
+│   │   ├── __init__.py
+│   │   ├── infra_scan.py
+│   │   ├── model_audit.py
+│   │   ├── pii_scan.py
+│   │   ├── report.py
+│   │   └── utils.py
+├── tests/
+│   ├── test_infra_scan.py
+│   ├── test_model_audit.py
+│   ├── test_pii_scan.py
+│   └── test_report.py
+├── infra/
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── ansible/
+│       └── deploy.yml
+├── notebooks/
+│   └── model_fairness_analysis.ipynb
 ├── .gitignore
 ├── main.py
-├── agent/
-│   ├── __init__.py
-│   ├── base_agent.py
-│   └── compliance_agent.py
-├── checks/
-│   ├── __init__.py
-│   ├── infra_scanner.py
-│   ├── ai_model_checker.py
-│   └── log_auditor.py
-├── reports/
-│   ├── __init__.py
-│   └── report_generator.py
-├── config/
-│   ├── settings.yaml
-│   └── rules/
-│       ├── infra_rules.json
-│       ├── ai_rules.json
-│       └── log_rules.json
-├── scripts/
-│   ├── deploy_with_terraform.sh
-│   └── run_ansible_playbook.sh
-├── notebooks/
-│   ├── model_bias_analysis.ipynb
-│   └── drift_detection.ipynb
-└── tests/
-    ├── __init__.py
-    ├── test_infra_scanner.py
-    ├── test_ai_model_checker.py
-    └── test_log_auditor.py
+├── README.md
+└── requirements.txt
 ```
 
 ## Getting Started
