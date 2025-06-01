@@ -1,34 +1,33 @@
 import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import time
 import json
 from datetime import datetime
 
-# TODO: replace these stub imports with your real compliance scan imports
-# from compliance_checker.infra_scan import perform_infra_scan
-# from compliance_checker.model_audit import perform_model_audit
-# from compliance_checker.pii_scan import perform_pii_scan
+from compliance_checker.infra_scan import scan_for_compliance
+from compliance_checker.model_audit import run_model_audit as audit_model_check
+from compliance_checker.pii_scan import perform_pii_scan
 
 def run_infra_scan():
     print("Running Infrastructure Scan...")
-    time.sleep(2)  # simulate processing
-    # results = perform_infra_scan()
-    results = "pass"  # placeholder
+    time.sleep(1)
+    results = scan_for_compliance()
     print("Infrastructure Scan completed.")
     return {"infra_scan": results}
 
-def run_model_audit():
+def run_model_audit_wrapper():
     print("Running AI Model Governance Audit...")
-    time.sleep(2)
-    # results = perform_model_audit()
-    results = "warning"  # placeholder
+    time.sleep(1)
+    results = audit_model_check()
     print("Model Audit completed.")
     return {"model_audit": results}
 
 def run_pii_scan():
     print("Running PII Data Exposure Scan...")
-    time.sleep(2)
-    # results = perform_pii_scan()
-    results = "pass"  # placeholder
+    time.sleep(1)
+    results = perform_pii_scan()
     print("PII Scan completed.")
     return {"pii_scan": results}
 
@@ -68,7 +67,7 @@ def main():
         if choice == "1":
             results.update(run_infra_scan())
         elif choice == "2":
-            results.update(run_model_audit())
+            results.update(run_model_audit_wrapper())
         elif choice == "3":
             results.update(run_pii_scan())
         elif choice == "4":

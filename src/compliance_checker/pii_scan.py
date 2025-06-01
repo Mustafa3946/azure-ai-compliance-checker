@@ -22,3 +22,15 @@ def scan_file(file_path: str) -> Dict[str, List[str]]:
     with open(file_path, 'r', encoding='utf-8') as f:
         text = f.read()
     return scan_text_for_pii(text)
+
+def perform_pii_scan(file_path: str = "data/sample_log.txt") -> Dict[str, List[str]]:
+    """
+    Wrapper function to perform PII scan on a default file.
+    """
+    return scan_file(file_path)
+
+if __name__ == "__main__":
+    results = perform_pii_scan()
+    print("PII Scan Results:")
+    for k, v in results.items():
+        print(f"{k}: {v}")
