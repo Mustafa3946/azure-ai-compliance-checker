@@ -1,4 +1,4 @@
-from src.compliance_checker import infra_scan, model_audit, tag_policy, pii_scan
+from src.compliance_checker import infra_scan, model_audit, tag_policy, pii_scan, report
 
 def run_all_checks():
     results = {}
@@ -41,3 +41,6 @@ if __name__ == "__main__":
     all_results = run_all_checks()
     print("Summary of all compliance checks:")
     print(all_results)
+
+    # Generate report file
+    report.generate_markdown_report(all_results)
