@@ -1,11 +1,18 @@
 # azure-ai-compliance-checker
-An Azure-powered compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
+
+An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
 
 ## Project Overview
 
-This project demonstrates an Azure-powered automated compliance checker designed to support enterprise AI governance, infrastructure security, and regulatory adherence. It leverages Infrastructure as Code (Terraform, Ansible) and integrates Azure AI services including Azure OpenAI and Azure Machine Learning to provide scalable, secure, and cost-efficient AI-driven automation.
+This project showcases an **agentic AI system** built to operate autonomously within Azure environments to ensure AI infrastructure compliance, security, and governance. It features an LLM-powered agent that orchestrates scans, audits, and policy evaluations across Infrastructure as Code, model governance metadata, and runtime environments.
 
-Built to showcase core skills for an Azure Engineer (AI) role, this solution automates the detection of infrastructure misconfigurations, audits AI model governance (drift, fairness, explainability), and performs regulatory compliance reporting aligned with industry standards such as APRA CPS 234 and Responsible AI frameworks.
+Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform**, and **Ansible**, the solution supports:
+
+- Autonomous compliance gap detection
+- Responsible AI governance checks (e.g., drift, fairness, explainability)
+- Regulatory alignment (e.g., APRA CPS 234, Microsoft Responsible AI)
+- Scalable and cost-efficient automation using GitOps best practices
+
 
 ## Features
 
@@ -26,39 +33,37 @@ Built to showcase core skills for an Azure Engineer (AI) role, this solution aut
 ## Folder Structure
 ```bash
 azure-ai-compliance-checker/
-├── README.md
-├── requirements.txt
+├── data/
+│   ├── config/
+│   └── results/
+├── src/
+│   ├── compliance_checker/
+│   │   ├── __init__.py
+│   │   ├── infra_scan.py
+│   │   ├── model_audit.py
+│   │   ├── pii_scan.py
+│   │   ├── report.py
+│   │   ├── tag_policy.py
+│   │   └── utils.py
+├── tests/
+│   ├── test_infra_scan.py
+│   ├── test_model_audit.py
+│   ├── test_pii_scan.py
+│   ├── test_tag_policy.py
+│   └── test_report.py
+├── infra/
+│   ├── terraform/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   └── ansible/
+│       └── deploy.yml
+├── notebooks/
+│   └── model_fairness_analysis.ipynb
 ├── .gitignore
 ├── main.py
-├── agent/
-│   ├── __init__.py
-│   ├── base_agent.py
-│   └── compliance_agent.py
-├── checks/
-│   ├── __init__.py
-│   ├── infra_scanner.py
-│   ├── ai_model_checker.py
-│   └── log_auditor.py
-├── reports/
-│   ├── __init__.py
-│   └── report_generator.py
-├── config/
-│   ├── settings.yaml
-│   └── rules/
-│       ├── infra_rules.json
-│       ├── ai_rules.json
-│       └── log_rules.json
-├── scripts/
-│   ├── deploy_with_terraform.sh
-│   └── run_ansible_playbook.sh
-├── notebooks/
-│   ├── model_bias_analysis.ipynb
-│   └── drift_detection.ipynb
-└── tests/
-    ├── __init__.py
-    ├── test_infra_scanner.py
-    ├── test_ai_model_checker.py
-    └── test_log_auditor.py
+├── README.md
+└── requirements.txt
 ```
 
 ## Getting Started
@@ -82,18 +87,35 @@ cd regulatory-compliance-checker
 2. Create a virtual environment and install dependencies:
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# or
-.\\.venv\\Scripts\\activate  # Windows
-```
+# Activate virtual environment:
+# On Linux/macOS:
+source .venv/bin/activate
+# On Windows PowerShell:
+.\\.venv\\Scripts\\Activate.ps1
+# On Windows cmd:
+.\\.venv\\Scripts\\activate.bat
+
 pip install -r requirements.txt
+```
 
 ### Usage
 Run the compliance checks individually or via the interactive agentic AI assistant:
 ```bash
-python src/agentic_ai.py
+python src/compliance_checker/agentic_ai.py
 ```
-This will prompt you through scanning options and generate reports accordingly.
+You will be presented with a menu to:
+
+```bash
+Please choose an option:
+1. Run Infrastructure Scan
+2. Run AI Model Governance Audit
+3. Run PII Data Exposure Scan
+4. Generate Compliance Report
+5. Exit
+Enter choice [1-5]:
+```
+
+Simply enter the number corresponding to your choice and follow prompts.
 
 ### Testing
 Run unit tests with:

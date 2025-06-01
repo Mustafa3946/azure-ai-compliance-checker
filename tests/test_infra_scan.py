@@ -1,0 +1,45 @@
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import json
+import unittest
+from unittest.mock import patch, mock_open
+from src.compliance_checker import infra_scan
+
+class TestInfraScan(unittest.TestCase):
+    def setUp(self):
+        self.test_output_file = "test_infra_report.json"
+
+    def tearDown(self):
+        if os.path.exists(self.test_output_file):
+            os.remove(self.test_output_file)
+
+    def test_scan_for_compliance_output_structure(self):
+        report = infra_scan.scan_for_compliance()
+        self.assertIsInstance(report, dict)
+        self.assertIn("summary", report)
+        self.assertIn("non_compliant_resources", report)
+        self.assertIsInstance(report["non_compliant_resources"], list)
+
+    def test_save_report_creates_file(self):
+        mock_report = {
+            "summary": {"total": 1, "non_compliant": 1},
+            "non_compliant_resources": [
+                {"name": "test", "type": "vm", "issue": "No env tag"}
+            ]
+        }
+        infra_scan.save_report(mock_report, self.test_output_file)
+        self.assertTrue(os.path.exists(self.test_output_file))
+        with open(self.test_output_file, 'r') as file:
+            content = json.load(file)
+        self.assertEqual(content, mock_report)
+
+    @patch("src.compliance_checker.infra_scan.open", new_callable=mock_open)
+    def test_save_report_calls_open(self, mock_file):
+        mock_report = {"summary": {}, "non_compliant_resources": []}
+        infra_scan.save_report(mock_report, self.test_output_file)
+        mock_file.assert_called_with(self.test_output_file, 'w')
+
+if __name__ == '__main__':
+    unittest.main()
