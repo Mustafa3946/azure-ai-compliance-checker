@@ -1,6 +1,24 @@
+## Table of Contents
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technology Stack](#technology-stack)
+- [Architecture Overview](#architecture-overview)
+- [Folder Structure](#folder-structure)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Testing](#testing)
+- [Documentation](#documentation)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+
 # azure-ai-compliance-checker
 
 An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
+
+---
 
 ## Project Overview
 
@@ -13,6 +31,7 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - Regulatory alignment (e.g., APRA CPS 234, Microsoft Responsible AI)
 - Scalable and cost-efficient automation using GitOps best practices
 
+---
 
 ## Features
 
@@ -20,7 +39,9 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **AI Model Governance Check:** Evaluate AI models for drift, bias, explainability, and fairness using metadata.
 - **Audit Log Analysis:** Identify potentially non-compliant data transfers and sensitive data exposures in logs.
 - **Reporting:** Generate summary compliance reports aligned with APRA CPS 234 and Responsible AI guidelines.
-- **Agentic AI Assistant:** A limited agentic AI assistant to guide users interactively through compliance checks and recommendations.
+- **Agentic AI Assistant:** An interactive assistant to guide users through compliance checks and recommendations.
+
+---
 
 ## Technology Stack
 
@@ -29,6 +50,8 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **DevOps Tools:** Git for version control, basic CI/CD scripts (optional)
 - **Programming:** Python for compliance checks, report generation, and agentic AI orchestration
 - **AI and Analytics:** Local model explainability/bias checks, minimal Azure AI service calls to reduce cost
+
+---
 
 ## Architecture Overview
 
@@ -60,7 +83,10 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
                           +---------------------------+
 ```
 
+---
+
 ## Folder Structure
+
 ```bash
 azure-ai-compliance-checker/
 ├── data/
@@ -96,6 +122,8 @@ azure-ai-compliance-checker/
 └── requirements.txt
 ```
 
+---
+
 ## Getting Started
 
 ### Prerequisites
@@ -110,32 +138,39 @@ azure-ai-compliance-checker/
 
 1. Clone the repository:
 
-```bash
-git clone https://github.com/Mustafa3946/azure-ai-compliance-checker.git
-cd regulatory-compliance-checker
-```
+    ```bash
+    git clone https://github.com/Mustafa3946/azure-ai-compliance-checker.git
+    cd azure-ai-compliance-checker
+    ```
+
 2. Create a virtual environment and install dependencies:
-```bash
-python -m venv .venv
-# Activate virtual environment:
-# On Linux/macOS:
-source .venv/bin/activate
-# On Windows PowerShell:
-.\\.venv\\Scripts\\Activate.ps1
-# On Windows cmd:
-.\\.venv\\Scripts\\activate.bat
 
-pip install -r requirements.txt
-```
+    ```bash
+    python -m venv .venv
+    # Activate virtual environment:
+    # On Linux/macOS:
+    source .venv/bin/activate
+    # On Windows PowerShell:
+    .\.venv\Scripts\Activate.ps1
+    # On Windows cmd:
+    .\.venv\Scripts\activate.bat
 
-### Usage
+    pip install -r requirements.txt
+    ```
+
+---
+
+## Usage
+
 Run the compliance checks individually or via the interactive agentic AI assistant:
+
 ```bash
 python src/compliance_checker/agentic_ai.py
 ```
-You will be presented with a menu to:
 
-```bash
+You will be presented with a menu:
+
+```
 Please choose an option:
 1. Run Infrastructure Scan
 2. Run AI Model Governance Audit
@@ -145,10 +180,11 @@ Please choose an option:
 Enter choice [1-5]:
 ```
 
-Simply enter the number corresponding to your choice and follow prompts.
+Enter the number corresponding to your choice and follow the prompts.
 
-The compliance report will be generated in data/results/ and will look like this:
-```bash
+The compliance report will be generated in `data/results/` and will look like this:
+
+```markdown
 # Compliance Report Summary
 
 ## Infrastructure Scan
@@ -180,19 +216,50 @@ The compliance report will be generated in data/results/ and will look like this
   - 123-45-6789
 ```
 
+---
 
-### Testing
+## Testing
+
 Run unit tests with:
+
 ```bash
 pytest tests/
 ```
+
+---
+
 ## Documentation
-Refer to detailed design and as-built documentation in the docs/ folder (to be added).
+
+Refer to detailed design and as-built documentation in the `docs/` folder (to be added).
+
+---
 
 ## Roadmap
-Planned enhancements:
-Integration with Azure DevOps pipelines for automated scanning
-Enhanced AI governance checks with Azure Machine Learning SDK
-Web-based dashboard for compliance visualization
-Full Azure resource scanning using Azure SDKs with proper auth
 
+Planned enhancements:
+
+- Integration with Azure DevOps pipelines for automated scanning
+- Enhanced AI governance checks with Azure Machine Learning SDK
+- Web-based dashboard for compliance visualization
+- Full Azure resource scanning using Azure SDKs with proper authentication
+
+---
+
+## License
+
+This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/).
+
+You may:
+- Share, remix, and adapt the work, as long as it's for **non-commercial purposes only**.
+
+You may not:
+- Use this work for **commercial purposes**, including resale or profit-driven uses, without explicit permission from the author.
+
+**Note:**  
+The `llama-2-7b.Q4_K_M.gguf` model file is **not included** in this repository.  
+You can download it from [Hugging Face](https://huggingface.co/) or the official Llama 2 release, and place it in the `models/` directory.
+
+![Build](https://img.shields.io/github/actions/workflow/status/Mustafa3946/azure-ai-compliance-checker/ci.yml)
+![Coverage](https://img.shields.io/codecov/c/github/Mustafa3946/azure-ai-compliance-checker)
+![License](https://img.shields.io/github/license/Mustafa3946/azure-ai-compliance-checker)
+![Python](https://img.shields.io/badge/python-3.8%2B-blue)
