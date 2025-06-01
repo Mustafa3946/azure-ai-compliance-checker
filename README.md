@@ -30,6 +30,36 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **Programming:** Python for compliance checks, report generation, and agentic AI orchestration
 - **AI and Analytics:** Local model explainability/bias checks, minimal Azure AI service calls to reduce cost
 
+## Architecture Overview
+
+```
++---------------------+         +---------------------+         +---------------------+
+|  User / Developer   | <-----> |  Agentic AI System  | <-----> |   Azure Services    |
++---------------------+         +---------------------+         +---------------------+
+         |                               |                               |
+         |                               |                               |
+         v                               v                               v
++---------------------+   +---------------------------+   +---------------------------+
+|  CLI / Assistant    |   | Compliance Check Modules  |   |   Infra as Code (IaC)     |
+|  (agentic_ai.py)    |   | - infra_scan.py           |   |   - Terraform             |
++---------------------+   | - model_audit.py          |   |   - Ansible               |
+                          | - pii_scan.py             |   +---------------------------+
+                          | - tag_policy.py           |           |
+                          +---------------------------+           v
+                                   |                        +---------------------+
+                                   v                        |   Azure Resources   |
+                          +---------------------------+     +---------------------+
+                          |    Report Generation      |
+                          |    (report.py)            |
+                          +---------------------------+
+                                   |
+                                   v
+                          +---------------------------+
+                          |   Compliance Reports      |
+                          |   (data/results/)         |
+                          +---------------------------+
+```
+
 ## Folder Structure
 ```bash
 azure-ai-compliance-checker/
@@ -165,3 +195,4 @@ Integration with Azure DevOps pipelines for automated scanning
 Enhanced AI governance checks with Azure Machine Learning SDK
 Web-based dashboard for compliance visualization
 Full Azure resource scanning using Azure SDKs with proper auth
+
