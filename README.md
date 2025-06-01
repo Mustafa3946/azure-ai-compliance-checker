@@ -81,7 +81,7 @@ azure-ai-compliance-checker/
 1. Clone the repository:
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/Mustafa3946/azure-ai-compliance-checker.git
 cd regulatory-compliance-checker
 ```
 2. Create a virtual environment and install dependencies:

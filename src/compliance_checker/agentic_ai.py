@@ -45,10 +45,63 @@ def export_report_to_file(results):
         return
 
     filename = f"compliance_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-    with open(filename, "w") as f:
+    folder_path = os.path.join("data", "results")
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = os.path.join(folder_path, filename)
+
+    with open(file_path, "w") as f:
         json.dump(results, f, indent=4)
 
-    print(f"Compliance report saved to {filename}")
+    print(f"Compliance JSON report saved to {file_path}")
+
+def export_report_to_markdown(results):
+    if not results:
+        print("No scan results available to export.")
+        return
+
+    filename = f"compliance_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+    folder_path = os.path.join("data", "results")
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = os.path.join(folder_path, filename)
+
+    with open(file_path, "w") as f:
+        f.write("# Compliance Report Summary\n\n")
+
+        infra = results.get('infra_scan', {})
+        f.write("## Infrastructure Scan\n\n")
+        summary = infra.get('summary', {})
+        f.write(f"- Total Resources Scanned: {summary.get('total', 0)}\n")
+        f.write(f"- Non-Compliant Resources: {summary.get('non_compliant', 0)}\n\n")
+
+        if infra.get('non_compliant_resources'):
+            f.write("### Non-Compliant Resources\n")
+            for resource in infra['non_compliant_resources']:
+                f.write(f"- **{resource['resource_name']}** ({resource['resource_type']}):\n")
+                for issue in resource['issues']:
+                    f.write(f"  - {issue}\n")
+            f.write("\n")
+
+        model_audit = results.get('model_audit', [])
+        f.write("## AI Model Governance Audit\n\n")
+        if model_audit:
+            for issue in model_audit:
+                f.write(f"- {issue}\n")
+        else:
+            f.write("No issues detected.\n")
+        f.write("\n")
+
+        pii_scan = results.get('pii_scan', {})
+        f.write("## PII Data Exposure Scan\n\n")
+        if any(pii_scan.values()):
+            for pii_type, items in pii_scan.items():
+                if items:
+                    f.write(f"- **{pii_type.capitalize()}**:\n")
+                    for item in items:
+                        f.write(f"  - {item}\n")
+        else:
+            f.write("No PII detected.\n")
+
+    print(f"Compliance Markdown report saved to {file_path}")
 
 def main():
     print("Welcome to the Azure AI Compliance Checker Assistant (Local Demo)")
@@ -77,6 +130,7 @@ def main():
                     save_choice = input("Save report to file? (y/n): ").strip().lower()
                     if save_choice == 'y':
                         export_report_to_file(results)
+                        export_report_to_markdown(results)
                         break
                     elif save_choice == 'n':
                         break
