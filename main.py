@@ -1,4 +1,4 @@
-from src.compliance_checker import infra_scan, model_audit, tag_policy
+from src.compliance_checker import infra_scan, model_audit, tag_policy, pii_scan
 
 def run_all_checks():
     results = {}
@@ -21,12 +21,19 @@ def run_all_checks():
 
     try:
         print("Running tag policy check...")
-        print(f"Imported tag_policy module functions: {dir(tag_policy)}")
         tag_results = tag_policy.run_tag_policy_check()
         print(f"Tag policy findings: {tag_results}\n")
         results["tag_policy"] = tag_results
     except Exception as e:
         print(f"Tag policy check failed: {e}")
+
+    try:
+        print("Running PII log scan...")
+        pii_results = pii_scan.scan_file("data/sample_log.txt")
+        print(f"PII scan findings: {pii_results}\n")
+        results["pii_scan"] = pii_results
+    except Exception as e:
+        print(f"PII scan failed: {e}")
 
     return results
 

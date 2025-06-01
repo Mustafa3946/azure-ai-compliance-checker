@@ -1,0 +1,1 @@
+User john.doe@example.com logged in. Phone: +61 400 123 456. SSN: 123-45-6789.
