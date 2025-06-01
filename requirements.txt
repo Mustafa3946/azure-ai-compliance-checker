@@ -1,1 +1,5 @@
+fairlearn
+scikit-learn
+pandas
+matplotlib
 pytest

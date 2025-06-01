@@ -42,6 +42,19 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **Agentic AI Assistant:** An interactive assistant to guide users through compliance checks and recommendations.
 
 ---
+### Model Fairness Audit
+
+This tool uses `fairlearn` and `scikit-learn` to assess bias in ML models. It computes:
+- Demographic Parity Difference
+- Equalized Odds Difference
+- Selection Rate by Group
+
+Example usage:
+
+```bash
+python src/compliance_checker/model_audit.py
+
+---
 
 ## Technology Stack
 
@@ -259,7 +272,4 @@ You may not:
 The `llama-2-7b.Q4_K_M.gguf` model file is **not included** in this repository.  
 You can download it from [Hugging Face](https://huggingface.co/) or the official Llama 2 release, and place it in the `models/` directory.
 
-![Build](https://img.shields.io/github/actions/workflow/status/Mustafa3946/azure-ai-compliance-checker/ci.yml)
-![Coverage](https://img.shields.io/codecov/c/github/Mustafa3946/azure-ai-compliance-checker)
-![License](https://img.shields.io/github/license/Mustafa3946/azure-ai-compliance-checker)
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)

@@ -1,75 +1,43 @@
 import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from fairlearn.metrics import MetricFrame, selection_rate, demographic_parity_difference, equalized_odds_difference
+from fairlearn.datasets import fetch_adult
 
 
 def check_model_drift(model_metadata: Dict[str, Any], threshold_days: int = 30) -> bool:
-    """
-    Checks whether the model may be outdated (i.e., drift risk) based on last training date.
-
-    Args:
-        model_metadata: Dictionary with 'last_trained' (ISO 8601 string)
-        threshold_days: Number of days to consider before flagging drift risk
-
-    Returns:
-        True if drift risk is detected, False otherwise
-    """
     last_trained = model_metadata.get("last_trained")
     if not last_trained:
-        return True  # Assume risk if metadata is missing
+        return True
 
     try:
         last_trained_date = datetime.datetime.fromisoformat(last_trained)
         days_since_train = (datetime.datetime.now() - last_trained_date).days
         return days_since_train > threshold_days
     except Exception:
-        return True  # Assume risk if format is invalid
+        return True
 
 
 def check_model_bias(metrics: Dict[str, float], bias_threshold: float = 0.1) -> bool:
-    """
-    Checks for potential bias by comparing precision or recall across groups.
-
-    Args:
-        metrics: Dictionary like {'precision_group_A': 0.91, 'precision_group_B': 0.75}
-        bias_threshold: Absolute difference threshold to flag bias
-
-    Returns:
-        True if possible bias detected, False otherwise
-    """
     precision_values = [
         v for k, v in metrics.items() if "precision" in k.lower()
     ]
     if len(precision_values) < 2:
-        return False  # Not enough data to determine bias
+        return False
 
     max_diff = max(precision_values) - min(precision_values)
     return max_diff > bias_threshold
 
 
 def check_model_explainability(metadata: Dict[str, Any]) -> bool:
-    """
-    Checks whether model explainability tools were used (e.g., SHAP, LIME)
-
-    Args:
-        metadata: Dictionary with keys like 'explainability_tools': ['SHAP', ...]
-
-    Returns:
-        True if explainability missing, False if explainability is present
-    """
     tools = metadata.get("explainability_tools", [])
-    return not tools  # True means explainability is missing
+    return not tools
 
 
 def audit_model(model_metadata: Dict[str, Any]) -> List[str]:
-    """
-    Runs all audit checks and returns list of compliance issues.
-
-    Args:
-        model_metadata: Metadata dict with model info
-
-    Returns:
-        List of string messages indicating audit failures
-    """
     issues = []
 
     if check_model_drift(model_metadata):
@@ -83,14 +51,13 @@ def audit_model(model_metadata: Dict[str, Any]) -> List[str]:
 
     return issues
 
+
 def run_model_audit() -> List[str]:
     """
     Runs a demo model audit using placeholder metadata.
-    
     Returns:
         List of audit issue strings
     """
-    # Demo model metadata (can be replaced by actual file/parsing later)
     example_model = {
         "last_trained": "2024-11-15T12:00:00",
         "metrics": {
@@ -101,3 +68,61 @@ def run_model_audit() -> List[str]:
     }
 
     return audit_model(example_model)
+
+
+def run_fairness_analysis(use_fairlearn_demo: bool = True) -> Optional[Dict[str, Any]]:
+    """
+    Run a fairness audit using Fairlearn on a sample dataset.
+    Returns:
+        Dictionary of fairness metrics or None if skipped
+    """
+    try:
+        if not use_fairlearn_demo:
+            return None
+
+        data = fetch_adult(as_frame=True)
+        X = data.data.drop(columns=["education-num"])
+        y = (data.target == ">50K").astype(int)
+
+        sensitive_feature = X["sex"]
+        X = pd.get_dummies(X.drop(columns=["sex", "native-country", "race", "workclass", "marital-status", "occupation"]), drop_first=True)
+
+        X_train, X_test, y_train, y_test, sf_train, sf_test = train_test_split(
+            X, y, sensitive_feature, test_size=0.3, random_state=42
+        )
+
+        model = LogisticRegression(max_iter=1000)
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+
+        frame = MetricFrame(metrics={"selection_rate": selection_rate},
+                            y_true=y_test, y_pred=y_pred, sensitive_features=sf_test)
+
+        dp_diff = demographic_parity_difference(y_test, y_pred, sensitive_features=sf_test)
+        eo_diff = equalized_odds_difference(y_test, y_pred, sensitive_features=sf_test)
+
+        return {
+            "selection_rate_by_group": frame.by_group.to_dict(),
+            "demographic_parity_difference": dp_diff,
+            "equalized_odds_difference": eo_diff
+        }
+
+    except Exception as e:
+        print(f"Fairness analysis failed: {e}")
+        return None
+
+
+if __name__ == "__main__":
+    print("=== Metadata-Based Model Audit ===")
+    issues = run_model_audit()
+    for issue in issues:
+        print(f"- {issue}")
+
+    print("\n=== Fairlearn-Based Fairness Analysis ===")
+    fairness_metrics = run_fairness_analysis()
+    if fairness_metrics:
+        print(f"Selection Rate by Group: {fairness_metrics['selection_rate_by_group']}")
+        print(f"Demographic Parity Difference: {fairness_metrics['demographic_parity_difference']:.3f}")
+        print(f"Equalized Odds Difference: {fairness_metrics['equalized_odds_difference']:.3f}")
+    else:
+        print("Fairness audit not performed.")

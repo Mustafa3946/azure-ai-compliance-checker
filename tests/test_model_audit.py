@@ -8,7 +8,8 @@ from src.compliance_checker.model_audit import (
     check_model_drift,
     check_model_bias,
     check_model_explainability,
-    audit_model
+    audit_model,
+    run_model_audit
 )
 
 class TestModelAudit(unittest.TestCase):
@@ -60,6 +61,11 @@ class TestModelAudit(unittest.TestCase):
         }
         issues = audit_model(metadata)
         self.assertEqual(issues, [])
+
+    def test_run_model_audit(self):
+        issues = run_model_audit()
+        self.assertTrue(len(issues) >= 1)
+        self.assertIn("Model may be outdated (drift risk).", issues)
 
 if __name__ == "__main__":
     unittest.main()
