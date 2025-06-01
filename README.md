@@ -87,27 +87,40 @@ cd regulatory-compliance-checker
 2. Create a virtual environment and install dependencies:
 ```bash
 python -m venv .venv
-source .venv/bin/activate  # Linux/macOS
-# or
-.\\.venv\\Scripts\\activate  # Windows
-```
+# Activate virtual environment:
+# On Linux/macOS:
+source .venv/bin/activate
+# On Windows PowerShell:
+.\\.venv\\Scripts\\Activate.ps1
+# On Windows cmd:
+.\\.venv\\Scripts\\activate.bat
+
 pip install -r requirements.txt
+```
 
 ### Usage
 Run the compliance checks individually or via the interactive agentic AI assistant:
 ```bash
 python src/compliance_checker/agentic_ai.py
 ```
-This will prompt you through scanning options and generate reports accordingly.
+You will be presented with a menu to:
+
+```bash
+Please choose an option:
+1. Run Infrastructure Scan
+2. Run AI Model Governance Audit
+3. Run PII Data Exposure Scan
+4. Generate Compliance Report
+5. Exit
+Enter choice [1-5]:
+```
+
+Simply enter the number corresponding to your choice and follow prompts.
 
 ### Testing
 Run unit tests with:
 ```bash
-pytest tests/test_infra_scan.py
-pytest tests/test_model_audit.py
-pytest tests/test_pii_scan.py
-pytest tests/test_report.py
-pytest tests/test_tag_policy.py
+pytest tests/
 ```
 ## Documentation
 Refer to detailed design and as-built documentation in the docs/ folder (to be added).
