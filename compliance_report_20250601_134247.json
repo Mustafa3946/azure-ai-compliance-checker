@@ -1,0 +1,5 @@
+{
+    "infra_scan": "pass",
+    "model_audit": "warning",
+    "pii_scan": "pass"
+}

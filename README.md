@@ -96,14 +96,18 @@ pip install -r requirements.txt
 ### Usage
 Run the compliance checks individually or via the interactive agentic AI assistant:
 ```bash
-python src/agentic_ai.py
+python src/compliance_checker/agentic_ai.py
 ```
 This will prompt you through scanning options and generate reports accordingly.
 
 ### Testing
 Run unit tests with:
 ```bash
-pytest tests/
+pytest tests/test_infra_scan.py
+pytest tests/test_model_audit.py
+pytest tests/test_pii_scan.py
+pytest tests/test_report.py
+pytest tests/test_tag_policy.py
 ```
 ## Documentation
 Refer to detailed design and as-built documentation in the docs/ folder (to be added).
