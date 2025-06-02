@@ -1,3 +1,23 @@
 .venv/
 **/__pycache__/
 data/results/
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Terraform crash logs
+crash.log
+
+# Terraform provider and module directories
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable files (you can rename if needed)
+terraform.tfvars
+*.tfvars.json
+
+# IDE/editor-specific (optional)
+.vscode/
+*.swp
+.idea/
