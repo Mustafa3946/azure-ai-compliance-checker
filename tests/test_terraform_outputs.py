@@ -1,9 +1,26 @@
+"""
+test_terraform_outputs.py
+
+Unit tests for verifying Terraform outputs after deployment.
+Ensures that key Azure resource outputs are present and correctly formatted.
+
+Functions:
+    - test_terraform_outputs: Runs 'terraform output -json' and checks for required outputs.
+"""
+
 import json
 import subprocess
 import unittest
 
 class TestTerraformOutputs(unittest.TestCase):
+    """
+    Test suite for validating Terraform output values.
+    """
+
     def test_terraform_outputs(self):
+        """
+        Runs 'terraform output -json' in the infra/terraform directory and checks for expected outputs.
+        """
         # Run 'terraform output -json'
         result = subprocess.run(
             ["terraform", "output", "-json"],
