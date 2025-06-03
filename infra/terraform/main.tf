@@ -34,7 +34,13 @@ resource "azurerm_storage_account_static_website" "compliance_static_website" {
 }
 
 resource "azurerm_storage_container" "reports" {
-  name                  = var.blob_container_name
-  storage_account_id    = azurerm_storage_account.compliance_storage.id
+  name                 = var.blob_container_name
+  storage_account_name = azurerm_storage_account.compliance_storage.name
   container_access_type = "blob"
+}
+
+resource "azurerm_role_assignment" "blob_data_contributor" {
+  scope                = azurerm_storage_account.compliance_storage.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = var.user_object_id
 }

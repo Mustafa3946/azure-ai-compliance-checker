@@ -17,3 +17,8 @@ variable "blob_container_name" {
   type    = string
   default = "reports"
 }
+
+variable "user_object_id" {
+  description = "Azure AD Object ID of the user or service principal to assign Blob Data Contributor role"
+  type        = string
+}
