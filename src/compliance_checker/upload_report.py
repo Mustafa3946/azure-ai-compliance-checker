@@ -116,7 +116,7 @@ def upload_report_to_azure(report_path: str, container_name: str = "reports"):
     reports_container = blob_service.get_container_client(container_name)
     with open(report_path, "rb") as report_file:
         reports_container.upload_blob(
-            name="report.html",
+            name="index.html",
             data=report_file,
             overwrite=True,
             content_settings=ContentSettings(content_type="text/html")

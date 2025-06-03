@@ -45,7 +45,7 @@ def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/r
 
     print(f"Report saved to {output_path}")
 
-def generate_html_report(results: Dict[str, Any], output_path: str = "data/results/report.html") -> None:
+def generate_html_report(results: Dict[str, Any], output_path: str = "data/results/index.html") -> None:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     timestamp = datetime.now(timezone.utc).isoformat() + "Z"
