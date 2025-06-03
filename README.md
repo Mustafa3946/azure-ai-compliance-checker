@@ -1,6 +1,16 @@
+# azure-ai-compliance-checker
+
+![Python](https://img.shields.io/badge/python-3.8%2B-blue)
+
+An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
+
+---
+
 ## Table of Contents
+
 - [Project Overview](#project-overview)
 - [Features](#features)
+- [Model Fairness Audit](#model-fairness-audit)
 - [Technology Stack](#technology-stack)
 - [Architecture Overview](#architecture-overview)
 - [Folder Structure](#folder-structure)
@@ -9,14 +19,7 @@
 - [Testing](#testing)
 - [Documentation](#documentation)
 - [Roadmap](#roadmap)
-- [Contributing](#contributing)
 - [License](#license)
-
----
-
-# azure-ai-compliance-checker
-
-An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
 
 ---
 
@@ -42,17 +45,20 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **Agentic AI Assistant:** An interactive assistant to guide users through compliance checks and recommendations.
 
 ---
-### Model Fairness Audit
 
-This tool uses `fairlearn` and `scikit-learn` to assess bias in ML models. It computes:
+## Model Fairness Audit
+
+This tool uses [`fairlearn`](https://fairlearn.org/) and [`scikit-learn`](https://scikit-learn.org/) to assess bias in ML models. It computes:
+
 - Demographic Parity Difference
 - Equalized Odds Difference
 - Selection Rate by Group
 
-Example usage:
+**Example usage:**
 
 ```bash
 python src/compliance_checker/model_audit.py
+```
 
 ---
 
@@ -78,7 +84,7 @@ python src/compliance_checker/model_audit.py
 +---------------------+   +---------------------------+   +---------------------------+
 |  CLI / Assistant    |   | Compliance Check Modules  |   |   Infra as Code (IaC)     |
 |  (agentic_ai.py)    |   | - infra_scan.py           |   |   - Terraform             |
-+---------------------+   | - model_audit.py          |   |   - Ansible               |
++---------------------+   | - model_audit.py          |   |                           |
                           | - pii_scan.py             |   +---------------------------+
                           | - tag_policy.py           |           |
                           +---------------------------+           v
@@ -126,10 +132,6 @@ azure-ai-compliance-checker/
 │   │   ├── main.tf
 │   │   ├── variables.tf
 │   │   └── outputs.tf
-│   └── ansible/
-│       └── deploy.yml
-├── notebooks/
-│   └── model_fairness_analysis.ipynb
 ├── .gitignore
 ├── main.py
 ├── README.md
@@ -150,14 +152,14 @@ azure-ai-compliance-checker/
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository:**
 
     ```bash
     git clone https://github.com/Mustafa3946/azure-ai-compliance-checker.git
     cd azure-ai-compliance-checker
     ```
 
-2. Create a virtual environment and install dependencies:
+2. **Create a virtual environment and install dependencies:**
 
     ```bash
     python -m venv .venv
@@ -176,14 +178,15 @@ azure-ai-compliance-checker/
 
 ## Usage
 
-### Notes:
-Ensure you have set your Azure Storage connection string environment variable before running the script:
-export AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
+> **Note:**  
+> Ensure you have set your Azure Storage connection string environment variable before running the script:
+
 ```bash
 export AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
 # or on Windows PowerShell:
 $env:AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
 ```
+
 Run the compliance checks individually or via the interactive agentic AI assistant:
 
 ```bash
@@ -206,10 +209,13 @@ Enter the number corresponding to your choice and follow the prompts.
 
 The compliance report will be generated in `data/results/` and will look like this:
 
+---
+
 ## Web Access to Compliance Reports
+
 After running scans and generating reports with the interactive assistant, the latest compliance report is automatically uploaded and available as a static website here:
 
-https://aicompliancedemost.z8.web.core.windows.net/
+[https://aicompliancedemost.z8.web.core.windows.net/](https://aicompliancedemost.z8.web.core.windows.net/)
 
 You can visit this URL anytime to view the most recent compliance report in a browser-friendly HTML format.
 
@@ -252,8 +258,3 @@ You may:
 You may not:
 - Use this work for **commercial purposes**, including resale or profit-driven uses, without explicit permission from the author.
 
-**Note:**  
-The `llama-2-7b.Q4_K_M.gguf` model file is **not included** in this repository.  
-You can download it from [Hugging Face](https://huggingface.co/) or the official Llama 2 release, and place it in the `models/` directory.
-
-![Python](https://img.shields.io/badge/python-3.8%2B-blue)
