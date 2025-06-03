@@ -40,6 +40,10 @@ def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/r
         else:
             lines.append(f"- {findings}\n")
 
+    lines.append("---")
+    lines.append("You can also access this report online:")
+    lines.append("[https://aicompliancedemost.z13.web.core.windows.net/](https://aicompliancedemost.z13.web.core.windows.net/)")
+
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(lines))
 
@@ -68,7 +72,9 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
         "<body>",
         f"<h1>Compliance Report</h1>",
         f"<p><em>Generated: {timestamp}</em></p>",
-        "<hr>"
+        "<hr>",
+        "<p>You can also access this report online at:<br>",
+        "<a href='https://aicompliancedemost.z13.web.core.windows.net/' target='_blank'>https://aicompliancedemost.z13.web.core.windows.net/</a></p>"
     ]
 
     for module_name, findings in results.items():
