@@ -10,10 +10,13 @@ Functions:
 """
 
 import os
+import re
 from datetime import datetime, timezone
 from typing import Dict, Any
 from html import escape
 from azure.storage.blob import BlobServiceClient, ContentSettings
+from compliance_checker.llm_assist import generate_summary_with_openai
+from compliance_checker.llm_assist import generate_summary_with_local_llama
 
 AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
 AZURE_STORAGE_CONTAINER = "$web"
@@ -66,6 +69,27 @@ def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/r
 
     print(f"Report saved to {output_path}")
 
+def clean_markdown(summary: str) -> str:
+    """
+    Converts markdown-formatted LLM output to a clean, readable plain English paragraph.
+    """
+    # Remove Markdown tables (convert to sentences)
+    summary = re.sub(r"\|.*?\|\n?", "", summary)  # Remove table rows
+    summary = re.sub(r"^[-|:]+$", "", summary, flags=re.MULTILINE)  # Remove separators
+
+    # Replace markdown headers with nothing
+    summary = re.sub(r"^#+\s*", "", summary, flags=re.MULTILINE)
+
+    # Remove bullet points and dashes
+    summary = re.sub(r"^\s*[-*+]\s*", "", summary, flags=re.MULTILINE)
+
+    # Convert newlines to spaces and collapse
+    summary = re.sub(r"\s*\n\s*", " ", summary)
+
+    # Collapse multiple spaces
+    summary = re.sub(r"\s{2,}", " ", summary)
+
+    return summary.strip()
 
 def generate_html_report(results: Dict[str, Any], output_path: str = "data/results/index.html") -> None:
     """
@@ -74,6 +98,10 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
     """
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
+    # Generate GPT summary
+    # summary = generate_summary_with_openai(results)
+    summary = generate_summary_with_local_llama(results)
+    summary = clean_markdown(summary)
     timestamp = datetime.now(timezone.utc).isoformat() + "Z"
 
     html_parts = [
@@ -94,6 +122,9 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
         "<body>",
         f"<h1>Compliance Report</h1>",
         f"<p><em>Generated: {timestamp}</em></p>",
+        "<hr>",
+        "<h2>Executive Summary</h2>",
+        f"<p>{escape(summary)}</p>",
         "<hr>"
     ]
 

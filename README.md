@@ -2,7 +2,7 @@
 
 ![Python](https://img.shields.io/badge/python-3.8%2B-blue)
 
-An Azure-powered, agentic compliance checker leveraging AI-driven automation and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
+An Azure-powered, agentic compliance checker leveraging AI-driven automation, LLM-based analysis, and Infrastructure as Code. Demonstrates integration of Azure AI services, Terraform, Ansible, and GitOps to support secure and scalable AI operations aligned with enterprise governance and regulatory requirements.
 
 ---
 
@@ -25,6 +25,9 @@ An Azure-powered, agentic compliance checker leveraging AI-driven automation and
 
 This project showcases an **agentic AI system** built to operate autonomously within Azure environments to ensure AI infrastructure compliance, security, and governance. It features an LLM-powered agent that orchestrates scans, audits, and policy evaluations across Infrastructure as Code, model governance metadata, and runtime environments.
 
+**LLM Usage:**  
+The compliance report leverages a Large Language Model (LLM) for analysis and summarization. By default, a local LLM model is used to minimize operational costs. However, the solution also includes the option to use Azure OpenAI for LLM-powered features if desired.
+
 Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform**, and **Ansible**, the solution supports:
 
 - Autonomous compliance gap detection
@@ -41,6 +44,7 @@ Leveraging tools like **Azure OpenAI**, **Azure Machine Learning**, **Terraform*
 - **Audit Log Analysis:** Identify potentially non-compliant data transfers and sensitive data exposures in logs.
 - **Reporting:** Generate summary compliance reports aligned with APRA CPS 234 and Responsible AI guidelines.
 - **Agentic AI Assistant:** An interactive assistant to guide users through compliance checks and recommendations.
+- **LLM-Powered Compliance Analysis:** Compliance reports are generated and summarized using a local LLM by default, with optional Azure OpenAI integration.
 
 ---
 
@@ -66,7 +70,7 @@ python src/compliance_checker/model_audit.py
 - **Infrastructure as Code:** Terraform and Ansible (demonstrated via templates and scripts)
 - **DevOps Tools:** Git for version control, basic CI/CD scripts (optional)
 - **Programming:** Python for compliance checks, report generation, and agentic AI orchestration
-- **AI and Analytics:** Local model explainability/bias checks, minimal Azure AI service calls to reduce cost
+- **AI and Analytics:** Local LLM for compliance analysis (default), optional Azure OpenAI integration, local model explainability/bias checks
 
 ---
 
@@ -118,6 +122,9 @@ azure-ai-compliance-checker/
 │   │   ├── report.py
 │   │   ├── tag_policy.py
 │   │   └── utils.py
+├── models/
+│   └── llama-2-7b.Q4_K_M.gguf
+    # (You must download this model file separately; it is not included in the repository.)
 ├── tests/
 │   ├── test_infra_scan.py
 │   ├── test_model_audit.py
