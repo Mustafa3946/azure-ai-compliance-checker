@@ -1,3 +1,14 @@
+"""
+llm_assist.py
+
+Provides functions to generate executive summaries of compliance scan results using either a local LLaMA model or OpenAI's GPT models.
+Allows cost-effective local summarization by default, with optional OpenAI integration.
+
+Functions:
+    - generate_summary_with_openai: Uses OpenAI API to summarize compliance scan results.
+    - generate_summary_with_local_llama: Uses a local LLaMA model to summarize compliance scan results.
+"""
+
 import os
 import json
 
@@ -15,6 +26,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 def generate_summary_with_openai(scan_results: dict, model="gpt-3.5-turbo"):
     """
     Generate an executive summary of compliance scan results using OpenAI.
+    Returns a summary string or an error message.
     """
     prompt = (
         "You are a compliance and governance expert. "
@@ -41,6 +53,7 @@ def generate_summary_with_openai(scan_results: dict, model="gpt-3.5-turbo"):
 def generate_summary_with_local_llama(scan_results: dict, model_path=r".\models\llama-2-7b.Q4_K_M.gguf"):
     """
     Generate an executive summary of compliance scan results using a local LLaMA model.
+    Returns a summary string or an error message.
     """
     if Llama is None:
         return "llama-cpp-python is not installed. Please install it with `pip install llama-cpp-python` to use local models."
@@ -56,7 +69,6 @@ def generate_summary_with_local_llama(scan_results: dict, model_path=r".\models\
     try:
         llama = Llama(model_path=model_path)
         response = llama(prompt, max_tokens=300, temperature=0.5)
-        # Adjust the following line if your llama-cpp-python version returns something different
         return response['choices'][0]['text'].strip()
     except Exception as e:
         return f"Local LLaMA summary failed: {str(e)}"
