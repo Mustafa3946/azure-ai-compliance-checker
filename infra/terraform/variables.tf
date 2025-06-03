@@ -12,3 +12,8 @@ variable "storage_account_name" {
   type    = string
   default = "aicompliancedemost"
 }
+
+variable "blob_container_name" {
+  type    = string
+  default = "reports"
+}

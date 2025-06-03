@@ -26,3 +26,15 @@ resource "azurerm_storage_account" "compliance_storage" {
     env = "demo"
   }
 }
+
+resource "azurerm_storage_account_static_website" "compliance_static_website" {
+  storage_account_id = azurerm_storage_account.compliance_storage.id
+  index_document     = "index.html"
+  error_404_document = "404.html"
+}
+
+resource "azurerm_storage_container" "reports" {
+  name                  = var.blob_container_name
+  storage_account_id    = azurerm_storage_account.compliance_storage.id
+  container_access_type = "blob"
+}
