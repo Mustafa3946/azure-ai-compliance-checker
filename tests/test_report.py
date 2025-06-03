@@ -1,3 +1,10 @@
+"""
+test_report.py
+
+Unit tests for the report module.
+Tests Markdown report generation from compliance findings.
+"""
+
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -9,6 +16,9 @@ TEST_REPORT_PATH = "data/results/test_compliance_report.md"
 
 @pytest.fixture
 def sample_findings():
+    """
+    Provides a sample findings dictionary for use in report generation tests.
+    """
     return {
         "infrastructure": {
             "summary": {"total": 2, "non_compliant": 1},
@@ -32,6 +42,9 @@ def sample_findings():
     }
 
 def test_generate_markdown_report_creates_file(sample_findings):
+    """
+    Test that generate_markdown_report creates a Markdown file with expected content.
+    """
     report.generate_markdown_report(sample_findings, output_path=TEST_REPORT_PATH)
     assert os.path.exists(TEST_REPORT_PATH)
     with open(TEST_REPORT_PATH, "r") as f:
@@ -46,6 +59,9 @@ def test_generate_markdown_report_creates_file(sample_findings):
     os.remove(TEST_REPORT_PATH)
 
 def test_generate_markdown_report_handles_empty_findings():
+    """
+    Test that generate_markdown_report handles empty findings and still creates a report file.
+    """
     empty_findings = {}
     # Provide an output path so file is written
     test_path = "data/results/test_empty_report.md"

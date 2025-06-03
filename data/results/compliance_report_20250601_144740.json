@@ -1,0 +1,43 @@
+{
+    "infra_scan": {
+        "summary": {
+            "total": 4,
+            "non_compliant": 2
+        },
+        "non_compliant_resources": [
+            {
+                "resource_name": "storage-logs",
+                "resource_type": "Microsoft.Storage/storageAccounts",
+                "issues": [
+                    "Missing 'env' tag"
+                ]
+            },
+            {
+                "resource_name": "vm-unlabeled",
+                "resource_type": "Microsoft.Compute/virtualMachines",
+                "issues": [
+                    "Missing 'env' tag"
+                ]
+            }
+        ]
+    },
+    "model_audit": [
+        "Model may be outdated (drift risk).",
+        "Possible model bias detected in precision/recall across groups.",
+        "Explainability tools not documented for this model."
+    ],
+    "pii_scan": {
+        "email": [
+            "john.doe@example.com"
+        ],
+        "phone": [
+            "4111 1111 1111"
+        ],
+        "credit_card": [
+            "4111 1111 1111 1111"
+        ],
+        "ssn": [
+            "123-45-6789"
+        ]
+    }
+}

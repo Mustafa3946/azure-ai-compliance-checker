@@ -1,3 +1,10 @@
+"""
+test_tag_policy.py
+
+Unit tests for the tag_policy module.
+Tests detection of missing required tags on Azure resources.
+"""
+
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -6,8 +13,12 @@ import unittest
 from src.compliance_checker.tag_policy import check_required_tags
 
 class TestTagPolicy(unittest.TestCase):
+    """
+    Test suite for tag_policy module.
+    """
 
     def setUp(self):
+        # Sample Azure resources with various tag configurations for testing.
         self.resources = [
             {"name": "vm-prod-1", "type": "Microsoft.Compute/virtualMachines", "tags": {"env": "prod", "owner": "teamA"}},
             {"name": "storage-logs", "type": "Microsoft.Storage/storageAccounts", "tags": {"owner": "teamB"}},
@@ -16,6 +27,9 @@ class TestTagPolicy(unittest.TestCase):
         ]
 
     def test_check_required_tags_defaults(self):
+        """
+        Test that check_required_tags detects missing default tags.
+        """
         violations = check_required_tags(self.resources)
         expected = [
             {
@@ -42,6 +56,9 @@ class TestTagPolicy(unittest.TestCase):
         self.assertEqual(violations, expected)
 
     def test_check_required_tags_custom(self):
+        """
+        Test that check_required_tags works with custom required tags.
+        """
         custom_required = ["project", "department"]
         violations = check_required_tags(self.resources, custom_required)
         # All resources missing both custom tags

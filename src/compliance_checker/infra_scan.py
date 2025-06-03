@@ -1,20 +1,51 @@
-import json
-from typing import Dict, Any, List
+"""
+infra_scan.py
 
-# Mock definitions simulating Azure SDK results
-MOCK_AZURE_RESOURCES = [
-    {"name": "vm-prod-1", "type": "Microsoft.Compute/virtualMachines", "tags": {"env": "prod"}},
-    {"name": "storage-logs", "type": "Microsoft.Storage/storageAccounts", "tags": {}},
-    {"name": "db-backup", "type": "Microsoft.Sql/servers", "tags": {"env": "dev"}},
-    {"name": "vm-unlabeled", "type": "Microsoft.Compute/virtualMachines", "tags": {}},
-]
+Performs Azure infrastructure compliance scanning using Azure SDK and CLI credentials.
+Fetches resources, checks for compliance issues (e.g., missing tags), and generates summary reports.
+"""
+
+from azure.identity import AzureCliCredential
+from azure.mgmt.resource import ResourceManagementClient
+from typing import List, Dict, Any
+import json
+import os
+
+def get_subscription_id() -> str:
+    """
+    Returns the current Azure subscription ID using the Azure CLI.
+    """
+    import subprocess
+    result = subprocess.run(
+        "az account show --query id -o tsv",
+        capture_output=True,
+        text=True,
+        shell=True  # Required for Windows to find 'az'
+    )
+    return result.stdout.strip()
+
+def fetch_azure_resources() -> List[Dict[str, Any]]:
+    """
+    Fetches all resources in the current Azure subscription using Azure SDK.
+    Returns a list of resource dictionaries with name, type, and tags.
+    """
+    subscription_id = get_subscription_id()
+    credential = AzureCliCredential()
+    resource_client = ResourceManagementClient(credential, subscription_id)
+
+    resources = []
+    for item in resource_client.resources.list():
+        resources.append({
+            "name": item.name,
+            "type": item.type,
+            "tags": item.tags or {}
+        })
+    return resources
 
 def scan_resources(resources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
-    Scans a list of Azure resources for common misconfiguration patterns.
-    Currently checks for:
-      - Missing tags (e.g., 'env')
-    Returns a list of issues found per resource.
+    Scans a list of Azure resources for compliance issues.
+    Returns a list of non-compliant resources with detected issues.
     """
     issues = []
     for res in resources:
@@ -29,13 +60,13 @@ def scan_resources(resources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             })
     return issues
 
-def generate_summary_report(issues: List[Dict[str, Any]]) -> Dict[str, Any]:
+def generate_summary_report(issues: List[Dict[str, Any]], total: int) -> Dict[str, Any]:
     """
-    Builds a summary report from a list of issues.
+    Generates a summary report dictionary from the list of issues and total resources scanned.
     """
     return {
         "summary": {
-            "total": len(MOCK_AZURE_RESOURCES),
+            "total": total,
             "non_compliant": len(issues),
         },
         "non_compliant_resources": issues,
@@ -43,23 +74,25 @@ def generate_summary_report(issues: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def scan_for_compliance() -> Dict[str, Any]:
     """
-    Public interface to perform a scan and return a full compliance report.
-    This is the function expected by unit tests.
+    Runs the full compliance scan: fetches resources, scans for issues, and returns a summary report.
     """
-    issues = scan_resources(MOCK_AZURE_RESOURCES)
-    report = generate_summary_report(issues)
-    return report
+    resources = fetch_azure_resources()
+    issues = scan_resources(resources)
+    return generate_summary_report(issues, total=len(resources))
 
 def save_report(report: Dict[str, Any], filepath: str = "data/results/infra_scan_report.json") -> None:
     """
-    Saves the compliance report to a JSON file.
+    Saves the compliance report to a JSON file at the specified filepath.
     """
+    dir_path = os.path.dirname(filepath)
+    if dir_path:
+        os.makedirs(dir_path, exist_ok=True)
     with open(filepath, "w") as f:
         json.dump(report, f, indent=2)
 
 def run_scan() -> None:
     """
-    Main CLI entrypoint for scanning and saving results.
+    Runs the compliance scan and saves the report to the default location.
     """
     report = scan_for_compliance()
     save_report(report)
