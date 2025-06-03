@@ -17,7 +17,6 @@ An Azure-powered, agentic compliance checker leveraging AI-driven automation and
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Testing](#testing)
-- [Documentation](#documentation)
 - [License](#license)
 
 ---
@@ -241,12 +240,6 @@ Run unit tests with:
 ```bash
 pytest tests/
 ```
-
----
-
-## Documentation
-
-Refer to detailed design and as-built documentation in the `docs/` folder (to be added).
 
 ---
 
