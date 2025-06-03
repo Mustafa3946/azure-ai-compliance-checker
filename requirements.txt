@@ -8,3 +8,5 @@ azure-identity
 azure-mgmt-resource
 azure-storage-blob
 azure-identity
+openai
+llama-cpp-python
