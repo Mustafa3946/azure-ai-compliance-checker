@@ -3,3 +3,6 @@ scikit-learn
 pandas
 matplotlib
 pytest
+
+azure-identity
+azure-mgmt-resource

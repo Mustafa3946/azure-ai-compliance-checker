@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import patch, mock_open
 from src.compliance_checker import infra_scan
 
+
 class TestInfraScan(unittest.TestCase):
     def setUp(self):
         self.test_output_file = "test_infra_report.json"
@@ -15,18 +16,25 @@ class TestInfraScan(unittest.TestCase):
         if os.path.exists(self.test_output_file):
             os.remove(self.test_output_file)
 
-    def test_scan_for_compliance_output_structure(self):
+    @patch("src.compliance_checker.infra_scan.fetch_azure_resources")
+    def test_scan_for_compliance_output_structure(self, mock_fetch):
+        # Mock Azure resources
+        mock_fetch.return_value = [
+            {"name": "vm-test", "type": "Microsoft.Compute/virtualMachines", "tags": {}},
+            {"name": "vm-prod", "type": "Microsoft.Compute/virtualMachines", "tags": {"env": "prod"}},
+        ]
         report = infra_scan.scan_for_compliance()
         self.assertIsInstance(report, dict)
         self.assertIn("summary", report)
         self.assertIn("non_compliant_resources", report)
-        self.assertIsInstance(report["non_compliant_resources"], list)
+        self.assertEqual(report["summary"]["total"], 2)
+        self.assertEqual(report["summary"]["non_compliant"], 1)
 
     def test_save_report_creates_file(self):
         mock_report = {
             "summary": {"total": 1, "non_compliant": 1},
             "non_compliant_resources": [
-                {"name": "test", "type": "vm", "issue": "No env tag"}
+                {"resource_name": "test", "resource_type": "vm", "issues": ["No env tag"]}
             ]
         }
         infra_scan.save_report(mock_report, self.test_output_file)

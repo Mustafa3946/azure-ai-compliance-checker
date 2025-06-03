@@ -1,21 +1,37 @@
+from azure.identity import AzureCliCredential
+from azure.mgmt.resource import ResourceManagementClient
+from typing import List, Dict, Any
 import json
-from typing import Dict, Any, List
+import os
 
-# Mock definitions simulating Azure SDK results
-MOCK_AZURE_RESOURCES = [
-    {"name": "vm-prod-1", "type": "Microsoft.Compute/virtualMachines", "tags": {"env": "prod"}},
-    {"name": "storage-logs", "type": "Microsoft.Storage/storageAccounts", "tags": {}},
-    {"name": "db-backup", "type": "Microsoft.Sql/servers", "tags": {"env": "dev"}},
-    {"name": "vm-unlabeled", "type": "Microsoft.Compute/virtualMachines", "tags": {}},
-]
+def get_subscription_id() -> str:
+    import subprocess
+    result = subprocess.run(
+        "az account show --query id -o tsv",
+        capture_output=True,
+        text=True,
+        shell=True  # Required for Windows to find 'az'
+    )
+    return result.stdout.strip()
+
+def fetch_azure_resources() -> List[Dict[str, Any]]:
+    """
+    Uses Azure SDK and CLI credentials to fetch resources in the current subscription.
+    """
+    subscription_id = get_subscription_id()
+    credential = AzureCliCredential()
+    resource_client = ResourceManagementClient(credential, subscription_id)
+
+    resources = []
+    for item in resource_client.resources.list():
+        resources.append({
+            "name": item.name,
+            "type": item.type,
+            "tags": item.tags or {}
+        })
+    return resources
 
 def scan_resources(resources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """
-    Scans a list of Azure resources for common misconfiguration patterns.
-    Currently checks for:
-      - Missing tags (e.g., 'env')
-    Returns a list of issues found per resource.
-    """
     issues = []
     for res in resources:
         res_issues = []
@@ -29,38 +45,31 @@ def scan_resources(resources: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             })
     return issues
 
-def generate_summary_report(issues: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """
-    Builds a summary report from a list of issues.
-    """
+def generate_summary_report(issues: List[Dict[str, Any]], total: int) -> Dict[str, Any]:
     return {
         "summary": {
-            "total": len(MOCK_AZURE_RESOURCES),
+            "total": total,
             "non_compliant": len(issues),
         },
         "non_compliant_resources": issues,
     }
 
 def scan_for_compliance() -> Dict[str, Any]:
-    """
-    Public interface to perform a scan and return a full compliance report.
-    This is the function expected by unit tests.
-    """
-    issues = scan_resources(MOCK_AZURE_RESOURCES)
-    report = generate_summary_report(issues)
-    return report
+    resources = fetch_azure_resources()
+    issues = scan_resources(resources)
+    return generate_summary_report(issues, total=len(resources))
 
 def save_report(report: Dict[str, Any], filepath: str = "data/results/infra_scan_report.json") -> None:
     """
     Saves the compliance report to a JSON file.
     """
+    dir_path = os.path.dirname(filepath)
+    if dir_path:  # Only create directories if there is a directory component
+        os.makedirs(dir_path, exist_ok=True)
     with open(filepath, "w") as f:
         json.dump(report, f, indent=2)
 
 def run_scan() -> None:
-    """
-    Main CLI entrypoint for scanning and saving results.
-    """
     report = scan_for_compliance()
     save_report(report)
 

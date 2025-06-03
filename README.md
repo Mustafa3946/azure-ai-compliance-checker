@@ -119,6 +119,7 @@ azure-ai-compliance-checker/
 │   ├── test_model_audit.py
 │   ├── test_pii_scan.py
 │   ├── test_tag_policy.py
+│   ├── test_terraform_outputs.py
 │   └── test_report.py
 ├── infra/
 │   ├── terraform/
