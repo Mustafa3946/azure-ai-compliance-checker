@@ -149,6 +149,20 @@ azure-ai-compliance-checker/
 - (Optional) Azure CLI configured with minimal Azure subscription access
 - (Optional) Azure OpenAI access for enhanced agentic AI capabilities
 
+### Azure CLI Authentication
+
+Before running any scans that access Azure resources, ensure you are logged in with the Azure CLI:
+
+```bash
+az login
+```
+
+If you have multiple subscriptions, set the desired subscription:
+
+```bash
+az account set --subscription "<your-subscription-name-or-id>"
+```
+
 ### Installation
 
 1. **Clone the repository:**
