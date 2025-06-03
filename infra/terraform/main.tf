@@ -1,3 +1,23 @@
+# main.tf
+#
+# Terraform configuration for deploying Azure resources required by the Azure AI Compliance Checker solution.
+# This file provisions a resource group, storage account (with static website hosting), blob container for reports,
+# and assigns the necessary role for blob data access.
+#
+# Resources:
+#   - azurerm_resource_group: Resource group for all compliance checker resources.
+#   - azurerm_storage_account: Storage account for storing reports and hosting the static website.
+#   - azurerm_storage_account_static_website: Enables static website hosting on the storage account.
+#   - azurerm_storage_container: Blob container for storing compliance reports.
+#   - azurerm_role_assignment: Assigns 'Storage Blob Data Contributor' role to a specified user or service principal.
+#
+# Variables required:
+#   - resource_group_name: Name for the resource group.
+#   - location: Azure region for deployment.
+#   - storage_account_name: Name for the storage account.
+#   - blob_container_name: Name for the blob container.
+#   - user_object_id: Object ID of the user or service principal to assign blob data contributor role.
+
 terraform {
   required_providers {
     azurerm = {
@@ -34,8 +54,8 @@ resource "azurerm_storage_account_static_website" "compliance_static_website" {
 }
 
 resource "azurerm_storage_container" "reports" {
-  name                 = var.blob_container_name
-  storage_account_name = azurerm_storage_account.compliance_storage.name
+  name                  = var.blob_container_name
+  storage_account_name  = azurerm_storage_account.compliance_storage.name
   container_access_type = "blob"
 }
 
