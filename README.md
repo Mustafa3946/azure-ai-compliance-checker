@@ -206,37 +206,12 @@ Enter the number corresponding to your choice and follow the prompts.
 
 The compliance report will be generated in `data/results/` and will look like this:
 
-```markdown
-# Compliance Report Summary
+## Web Access to Compliance Reports
+After running scans and generating reports with the interactive assistant, the latest compliance report is automatically uploaded and available as a static website here:
 
-## Infrastructure Scan
+https://aicompliancedemost.z13.web.core.windows.net/
 
-- Total Resources Scanned: 4
-- Non-Compliant Resources: 2
-
-### Non-Compliant Resources
-- **storage-logs** (Microsoft.Storage/storageAccounts):
-  - Missing 'env' tag
-- **vm-unlabeled** (Microsoft.Compute/virtualMachines):
-  - Missing 'env' tag
-
-## AI Model Governance Audit
-
-- Model may be outdated (drift risk).
-- Possible model bias detected in precision/recall across groups.
-- Explainability tools not documented for this model.
-
-## PII Data Exposure Scan
-
-- **Email**:
-  - john.doe@example.com
-- **Phone**:
-  - 4111 1111 1111
-- **Credit_card**:
-  - 4111 1111 1111 1111
-- **Ssn**:
-  - 123-45-6789
-```
+You can visit this URL anytime to view the most recent compliance report in a browser-friendly HTML format.
 
 ---
 
