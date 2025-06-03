@@ -9,6 +9,7 @@ from datetime import datetime
 from compliance_checker.infra_scan import scan_for_compliance
 from compliance_checker.model_audit import run_model_audit as audit_model_check
 from compliance_checker.pii_scan import perform_pii_scan
+from compliance_checker.report import generate_html_report  # <-- new import
 
 def run_infra_scan():
     print("Running Infrastructure Scan...")
@@ -131,6 +132,7 @@ def main():
                     if save_choice == 'y':
                         export_report_to_file(results)
                         export_report_to_markdown(results)
+                        generate_html_report(results)  # <-- generate HTML here
                         break
                     elif save_choice == 'n':
                         break

@@ -103,7 +103,7 @@ python src/compliance_checker/model_audit.py
 ```bash
 azure-ai-compliance-checker/
 ├── data/
-│   ├── config/
+│   ├── sample_log.txt
 │   └── results/
 ├── src/
 │   ├── compliance_checker/
@@ -176,6 +176,14 @@ azure-ai-compliance-checker/
 
 ## Usage
 
+### Notes:
+Ensure you have set your Azure Storage connection string environment variable before running the script:
+export AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
+```bash
+export AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
+# or on Windows PowerShell:
+$env:AZURE_STORAGE_CONNECTION_STRING="your_connection_string_here"
+```
 Run the compliance checks individually or via the interactive agentic AI assistant:
 
 ```bash

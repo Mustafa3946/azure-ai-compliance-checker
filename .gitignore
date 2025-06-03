@@ -1,6 +1,7 @@
 .venv/
 **/__pycache__/
-data/results/
+data/results/*.json
+data/results/*.md
 *.sh
 
 # Terraform state
