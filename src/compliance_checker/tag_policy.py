@@ -1,3 +1,14 @@
+"""
+tag_policy.py
+
+Checks Azure resources for compliance with required tagging policies.
+Identifies resources missing required tags such as 'env', 'owner', or 'cost_center'.
+
+Functions:
+    - check_required_tags: Checks a list of resources for missing required tags.
+    - run_tag_policy_check: Example/demo function to run the tag policy check on sample data.
+"""
+
 from typing import List, Dict, Any
 
 def check_required_tags(
@@ -36,7 +47,13 @@ def check_required_tags(
     return violations
 
 def run_tag_policy_check() -> List[Dict[str, Any]]:
-    # Example resource data, replace with real resource fetching later
+    """
+    Runs the tag policy check on example resource data.
+    Replace sample_resources with real resource fetching for production use.
+
+    Returns:
+        List of resources missing required tags.
+    """
     print("DEBUG: run_tag_policy_check called")
     sample_resources = [
         {"name": "storage-logs", "type": "Microsoft.Storage/storageAccounts", "tags": {"owner": "teamA"}},

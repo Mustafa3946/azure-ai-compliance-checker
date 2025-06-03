@@ -1,3 +1,14 @@
+"""
+report.py
+
+Generates compliance reports in Markdown and HTML formats from scan results.
+Optionally uploads the HTML report to Azure Blob Storage for web access.
+
+Functions:
+    - generate_markdown_report: Creates a Markdown report from compliance results.
+    - generate_html_report: Creates an HTML report from compliance results and uploads to Azure Blob Storage if configured.
+"""
+
 import os
 from datetime import datetime, timezone
 from typing import Dict, Any
@@ -11,6 +22,9 @@ AZURE_BLOB_NAME = "index.html"
 
 
 def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/results/compliance_report.md") -> None:
+    """
+    Generates a Markdown report from compliance scan results and saves it to the specified path.
+    """
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     timestamp = datetime.now(timezone.utc).isoformat() + "Z"
@@ -54,6 +68,10 @@ def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/r
 
 
 def generate_html_report(results: Dict[str, Any], output_path: str = "data/results/index.html") -> None:
+    """
+    Generates an HTML report from compliance scan results, saves it to the specified path,
+    and uploads it to Azure Blob Storage if the connection string is set.
+    """
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
     timestamp = datetime.now(timezone.utc).isoformat() + "Z"
@@ -115,6 +133,7 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
 
     print(f"HTML report saved to {output_path}")
 
+    # Upload the HTML report to Azure Blob Storage if connection string is set
     if AZURE_STORAGE_CONNECTION_STRING:
         try:
             print("Uploading index.html to Azure Blob Storage using SDK...")

@@ -1,3 +1,19 @@
+"""
+model_audit.py
+
+Performs AI model governance audits and fairness analysis.
+Includes checks for model drift, bias, and explainability using metadata,
+and demonstrates fairness metrics computation using Fairlearn and scikit-learn.
+
+Functions:
+    - check_model_drift: Checks if a model is outdated based on last training date.
+    - check_model_bias: Checks for bias in model precision metrics across groups.
+    - check_model_explainability: Checks if explainability tools are documented.
+    - audit_model: Aggregates audit issues for a given model's metadata.
+    - run_model_audit: Runs a demo audit on example model metadata.
+    - run_fairness_analysis: Runs a fairness audit using Fairlearn on a sample dataset.
+"""
+
 import datetime
 from typing import Dict, List, Any, Optional
 
@@ -9,6 +25,10 @@ from fairlearn.datasets import fetch_adult
 
 
 def check_model_drift(model_metadata: Dict[str, Any], threshold_days: int = 30) -> bool:
+    """
+    Determines if the model is outdated based on the last training date.
+    Returns True if the model is considered to have drifted.
+    """
     last_trained = model_metadata.get("last_trained")
     if not last_trained:
         return True
@@ -22,6 +42,10 @@ def check_model_drift(model_metadata: Dict[str, Any], threshold_days: int = 30) 
 
 
 def check_model_bias(metrics: Dict[str, float], bias_threshold: float = 0.1) -> bool:
+    """
+    Checks for bias in model precision metrics across groups.
+    Returns True if the difference exceeds the bias threshold.
+    """
     precision_values = [
         v for k, v in metrics.items() if "precision" in k.lower()
     ]
@@ -33,11 +57,19 @@ def check_model_bias(metrics: Dict[str, float], bias_threshold: float = 0.1) -> 
 
 
 def check_model_explainability(metadata: Dict[str, Any]) -> bool:
+    """
+    Checks if explainability tools are documented in the model metadata.
+    Returns True if no tools are listed.
+    """
     tools = metadata.get("explainability_tools", [])
     return not tools
 
 
 def audit_model(model_metadata: Dict[str, Any]) -> List[str]:
+    """
+    Aggregates audit issues for a given model's metadata.
+    Returns a list of issue descriptions.
+    """
     issues = []
 
     if check_model_drift(model_metadata):
@@ -72,9 +104,8 @@ def run_model_audit() -> List[str]:
 
 def run_fairness_analysis(use_fairlearn_demo: bool = True) -> Optional[Dict[str, Any]]:
     """
-    Run a fairness audit using Fairlearn on a sample dataset.
-    Returns:
-        Dictionary of fairness metrics or None if skipped
+    Runs a fairness audit using Fairlearn on a sample dataset.
+    Returns a dictionary of fairness metrics or None if skipped or failed.
     """
     try:
         if not use_fairlearn_demo:
@@ -113,11 +144,13 @@ def run_fairness_analysis(use_fairlearn_demo: bool = True) -> Optional[Dict[str,
 
 
 if __name__ == "__main__":
+    # Demo: Run metadata-based model audit
     print("=== Metadata-Based Model Audit ===")
     issues = run_model_audit()
     for issue in issues:
         print(f"- {issue}")
 
+    # Demo: Run Fairlearn-based fairness analysis
     print("\n=== Fairlearn-Based Fairness Analysis ===")
     fairness_metrics = run_fairness_analysis()
     if fairness_metrics:

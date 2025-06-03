@@ -18,7 +18,6 @@ An Azure-powered, agentic compliance checker leveraging AI-driven automation and
 - [Usage](#usage)
 - [Testing](#testing)
 - [Documentation](#documentation)
-- [Roadmap](#roadmap)
 - [License](#license)
 
 ---
@@ -234,17 +233,6 @@ pytest tests/
 ## Documentation
 
 Refer to detailed design and as-built documentation in the `docs/` folder (to be added).
-
----
-
-## Roadmap
-
-Planned enhancements:
-
-- Integration with Azure DevOps pipelines for automated scanning
-- Enhanced AI governance checks with Azure Machine Learning SDK
-- Web-based dashboard for compliance visualization
-- Full Azure resource scanning using Azure SDKs with proper authentication
 
 ---
 

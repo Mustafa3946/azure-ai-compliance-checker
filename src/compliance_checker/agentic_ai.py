@@ -1,3 +1,11 @@
+"""
+Azure AI Compliance Checker Assistant (Local Demo)
+
+This script provides an interactive CLI assistant to run infrastructure, model audit, and PII scans,
+and to generate compliance reports in JSON, Markdown, and HTML formats. It orchestrates the compliance
+workflow for Azure-based AI solutions, supporting governance and regulatory requirements.
+"""
+
 import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -9,9 +17,12 @@ from datetime import datetime
 from compliance_checker.infra_scan import scan_for_compliance
 from compliance_checker.model_audit import run_model_audit as audit_model_check
 from compliance_checker.pii_scan import perform_pii_scan
-from compliance_checker.report import generate_html_report  # <-- new import
+from compliance_checker.report import generate_html_report
 
 def run_infra_scan():
+    """
+    Run the infrastructure compliance scan and return results.
+    """
     print("Running Infrastructure Scan...")
     time.sleep(1)
     results = scan_for_compliance()
@@ -19,6 +30,9 @@ def run_infra_scan():
     return {"infra_scan": results}
 
 def run_model_audit_wrapper():
+    """
+    Run the AI model governance audit and return results.
+    """
     print("Running AI Model Governance Audit...")
     time.sleep(1)
     results = audit_model_check()
@@ -26,6 +40,9 @@ def run_model_audit_wrapper():
     return {"model_audit": results}
 
 def run_pii_scan():
+    """
+    Run the PII data exposure scan and return results.
+    """
     print("Running PII Data Exposure Scan...")
     time.sleep(1)
     results = perform_pii_scan()
@@ -33,6 +50,9 @@ def run_pii_scan():
     return {"pii_scan": results}
 
 def generate_report(results):
+    """
+    Print a summary of the compliance scan results to the console.
+    """
     print("\nGenerating compliance report...")
     time.sleep(1)
     print("=== Compliance Report Summary ===")
@@ -41,6 +61,9 @@ def generate_report(results):
     print("==============================\n")
 
 def export_report_to_file(results):
+    """
+    Export the compliance results to a timestamped JSON file.
+    """
     if not results:
         print("No scan results available to export.")
         return
@@ -56,6 +79,9 @@ def export_report_to_file(results):
     print(f"Compliance JSON report saved to {file_path}")
 
 def export_report_to_markdown(results):
+    """
+    Export the compliance results to a timestamped Markdown file.
+    """
     if not results:
         print("No scan results available to export.")
         return
@@ -105,6 +131,10 @@ def export_report_to_markdown(results):
     print(f"Compliance Markdown report saved to {file_path}")
 
 def main():
+    """
+    Main interactive loop for the CLI assistant.
+    Allows the user to run scans and generate/export compliance reports.
+    """
     print("Welcome to the Azure AI Compliance Checker Assistant (Local Demo)")
     results = {}
 
@@ -132,7 +162,7 @@ def main():
                     if save_choice == 'y':
                         export_report_to_file(results)
                         export_report_to_markdown(results)
-                        generate_html_report(results)  # <-- generate HTML here
+                        generate_html_report(results)
                         break
                     elif save_choice == 'n':
                         break
