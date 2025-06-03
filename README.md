@@ -209,7 +209,7 @@ The compliance report will be generated in `data/results/` and will look like th
 ## Web Access to Compliance Reports
 After running scans and generating reports with the interactive assistant, the latest compliance report is automatically uploaded and available as a static website here:
 
-https://aicompliancedemost.z13.web.core.windows.net/
+https://aicompliancedemost.z8.web.core.windows.net/
 
 You can visit this URL anytime to view the most recent compliance report in a browser-friendly HTML format.
 

@@ -2,6 +2,13 @@ import os
 from datetime import datetime, timezone
 from typing import Dict, Any
 from html import escape
+from azure.storage.blob import BlobServiceClient, ContentSettings
+
+AZURE_STORAGE_CONNECTION_STRING = os.getenv("AZURE_STORAGE_CONNECTION_STRING")
+AZURE_STORAGE_CONTAINER = "$web"
+AZURE_STORAGE_ACCOUNT_NAME = "aicompliancedemost"
+AZURE_BLOB_NAME = "index.html"
+
 
 def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/results/compliance_report.md") -> None:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -40,14 +47,11 @@ def generate_markdown_report(results: Dict[str, Any], output_path: str = "data/r
         else:
             lines.append(f"- {findings}\n")
 
-    lines.append("---")
-    lines.append("You can also access this report online:")
-    lines.append("[https://aicompliancedemost.z13.web.core.windows.net/](https://aicompliancedemost.z13.web.core.windows.net/)")
-
     with open(output_path, 'w', encoding='utf-8') as f:
         f.write("\n".join(lines))
 
     print(f"Report saved to {output_path}")
+
 
 def generate_html_report(results: Dict[str, Any], output_path: str = "data/results/index.html") -> None:
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
@@ -72,9 +76,7 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
         "<body>",
         f"<h1>Compliance Report</h1>",
         f"<p><em>Generated: {timestamp}</em></p>",
-        "<hr>",
-        "<p>You can also access this report online at:<br>",
-        "<a href='https://aicompliancedemost.z13.web.core.windows.net/' target='_blank'>https://aicompliancedemost.z13.web.core.windows.net/</a></p>"
+        "<hr>"
     ]
 
     for module_name, findings in results.items():
@@ -112,3 +114,23 @@ def generate_html_report(results: Dict[str, Any], output_path: str = "data/resul
         f.write("\n".join(html_parts))
 
     print(f"HTML report saved to {output_path}")
+
+    if AZURE_STORAGE_CONNECTION_STRING:
+        try:
+            print("Uploading index.html to Azure Blob Storage using SDK...")
+            blob_service_client = BlobServiceClient.from_connection_string(AZURE_STORAGE_CONNECTION_STRING)
+            blob_client = blob_service_client.get_blob_client(container=AZURE_STORAGE_CONTAINER, blob=AZURE_BLOB_NAME)
+
+            with open(output_path, "rb") as data:
+                blob_client.upload_blob(
+                    data,
+                    overwrite=True,
+                    content_settings=ContentSettings(content_type='text/html')
+                )
+
+            print("Upload successful. You can view the report at:")
+            print(f"https://{AZURE_STORAGE_ACCOUNT_NAME}.z8.web.core.windows.net/{AZURE_BLOB_NAME}")
+        except Exception as e:
+            print(f"Failed to upload to Azure Blob Storage: {e}")
+    else:
+        print("Azure Storage connection string not found in environment variable 'AZURE_STORAGE_CONNECTION_STRING'.")
