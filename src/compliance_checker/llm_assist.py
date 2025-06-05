@@ -20,14 +20,15 @@ except ImportError:
 
 from openai import OpenAI
 
-# Initialize the OpenAI client using environment variable for API key
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def generate_summary_with_openai(scan_results: dict, model="gpt-3.5-turbo"):
     """
     Generate an executive summary of compliance scan results using OpenAI.
     Returns a summary string or an error message.
     """
+    # Initialize the OpenAI client using environment variable for API key
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    
     prompt = (
         "You are a compliance and governance expert. "
         "Write a one-paragraph executive summary of the Azure compliance scan results provided below. "
